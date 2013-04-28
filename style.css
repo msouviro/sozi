@@ -1,0 +1,67 @@
+#sozi-toc text{
+    fill:
+    #eff;font-family:Verdana,sans-serif;
+    font-size:12pt;
+}
+
+#sozi-toc text:hover{
+    fill:#0cf;
+    cursor:pointer;
+}
+
+#sozi-toc text.sozi-toc-current{fill:#fa4}
+
+#sozi-toc-background{
+    stroke:#222;
+    stroke-opacity:.1;
+    stroke-width:10;
+    fill:#222;
+    fill-opacity:.9;
+}
+
+.sozi-toc-arrow{
+    fill:#eff;
+    fill-opacity:.75;
+    stroke:none;
+}
+.sozi-toc-arrow:hover{fill:#0cf}
+
+.xtrazoom,
+.xtrazoom * {
+    opacity:1 !important;
+}
+
+#calque1 .topath:hover,
+#calque1 .topath,
+#calque1 text:hover,
+#calque1 text {
+    transition-property:opacity,fill,stroke-width;
+    transition-duration:2s;
+    -o-transition-property:opacity,fill,stroke-width;
+    -o-transition-duration:2s;
+    -moz-transition-property:opacity,fill,stroke-width;
+    -moz-transition-duration:2s;
+    -webkit-transition-property:opacity,fill,stroke-width;
+    -webkit-transition-duration:2s;
+}
+
+.topath, text {
+    opacity:0;
+    font-style:normal;
+    font-weight:normal;
+    line-height:125%;
+    letter-spacing:0px;
+    word-spacing:0px;
+    stroke:#FFF;
+    font-family:Sans;
+    fill:#666;
+    stroke-width:0;
+    cursor: crosshair;
+
+}
+
+g .topath:hover,
+g text:hover {
+    fill:#F80;
+    stroke-width:10px;  
+}

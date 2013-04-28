@@ -476,15 +476,15 @@ module(this, "sozi.animation", function (exports, window) {
     }
     
     /*
-     * Altere ou restore des attributs localement.
+     * Set or restore attributes list to current sequence.
      *
-     * Cette fonction agig suer les attibuts placés par 
+     * apporté par Marco
+     * argument indicates if we change (true) ore restore (false) the
+     * target objects
      */
     exports.alterAttributes = function (is_modify) {
-	/* apporté par Marco */
 	var index = sozi.location.getFrameIndex();
 	if (sozi.document.frames[index].transitionTargetstyle) {
-	   //var objlist = eval("({" + sozi.document.frames[index].transitionTargetstyle + "})");
 	   var objlist = null;
 	   if (is_modify) objlist = sozi.document.frames[index].transitionTargetstyle.new;
 	   else           objlist = sozi.document.frames[index].transitionTargetstyle.old;
@@ -508,8 +508,6 @@ module(this, "sozi.animation", function (exports, window) {
     function start() {
 	/* apporté par Marco */
 	exports.alterAttributes(false);
-	//alert(index+'//START-----');
-
         if (requestAnimationFrame) {
             requestAnimationFrame(loop);
         }
@@ -1243,7 +1241,6 @@ module(this, "sozi.player", function (exports, window) {
     exports.startFromIndex = function (index) {
 	/* apporté par Marco */
 	sozi.animation.alterAttributes(true);
-//    alert(index+'--restart--');
         playing = true;
         waiting = false;
         sourceFrameIndex = index;
@@ -1313,7 +1310,6 @@ module(this, "sozi.player", function (exports, window) {
      * The URL hash is set to the given frame index (1-based).
      */
     exports.jumpToFrame = function (index) {
-//        alert(index+'jump----');
         exports.stop();
         sozi.events.fire("cleanup");
 
@@ -1376,7 +1372,6 @@ module(this, "sozi.player", function (exports, window) {
     }
     
     exports.previewFrame = function (index) {
-//        alert(index+'preview----');
         currentFrameIndex = index;
         animator.start(DEFAULT_DURATION_MS,
             getAnimationData(display, sozi.document.frames[index],
@@ -1397,7 +1392,6 @@ module(this, "sozi.player", function (exports, window) {
      * The URL hash is set to the given frame index (1-based).
      */
     exports.moveToFrame = function (index) {
-//    alert(index+'move----');
         if (waiting) {
             window.clearTimeout(nextFrameTimeout);
             waiting = false;
@@ -1882,19 +1876,28 @@ module(this, "sozi.document", function (exports, window) {
     exports.idLayerList = [];
     
     /*
-    * Returns the value of an attribute of a given Sozi SVG element.
-    *
-    * If the attribute is not set, then a default value is returned.
-    * See DEFAULTS.
-    */
+     * Returns the value of an attribute of a given Sozi SVG element.
+     *
+     * If the attribute is not set, then a default value is returned.
+     * See DEFAULTS.
+     */
     function readAttribute(soziElement, attr) {
         var value = soziElement.getAttributeNS(SOZI_NS, attr);
         var res = value;
 	if (value === null || value === "") res = DEFAULTS[attr];
-//	var res = (value == "" ? DEFAULTS[attr] : value);
-//	if (attr == 'transition-duration-ms')  alert(attr+'='+value+'//'+DEFAULTS[attr]+':'+res);
         return res;
     }
+
+    /*
+     * Returs attributes list to modify locally (into a step).
+     *
+     * apporté par Marco
+     * input is a XML sozi sequence object followed by attribute name contenig description 
+     * the list is given as a JSON string without englobing braces (top level {}) 
+     * this list is a 2 level depth object,
+     * first level indicates XML id
+     * second level indicates attribute name with associated value
+     */
     function readForeignAttribute(soziElement, attr) {
         var objstrg = readAttribute(soziElement, attr);
 	var objmod = null;
@@ -2032,8 +2035,6 @@ module(this, "sozi.document", function (exports, window) {
                 transitionTargetstyle: readForeignAttribute(soziFrame, "transition-targetstyle"),
                 layers: {}
             };
-//	    alert('transition-duration-ms = ' + readAttribute(soziFrame, "transition-duration-ms"));
-
             // Get the default properties for all layers, either from
             // the current <frame> element or from the corresponding
             // layer in the previous frame.
